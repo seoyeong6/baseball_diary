@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:baseball_diary/authentication/widgets/textfield_widget.dart';
 import 'package:baseball_diary/authentication/widgets/next_button.dart';
 import 'package:baseball_diary/authentication/select_screen.dart';
 

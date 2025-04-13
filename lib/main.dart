@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:baseball_diary/authentication/login_screen.dart';
+import 'package:baseball_diary/main_navigation/main_navigation_screen.dart';
 import 'package:device_preview_plus/device_preview_plus.dart';
 import 'package:flutter/foundation.dart';
 
@@ -28,14 +28,14 @@ class MyApp extends StatelessWidget {
           elevation: 0,
           titleTextStyle: TextStyle(
             color: Colors.black,
-            fontSize: 24,
+            fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
         scaffoldBackgroundColor: Colors.white,
         primaryColor: Colors.black,
       ),
-      home: const LoginScreen(),
+      home: const MainNavigationScreen(),
     );
   }
 }

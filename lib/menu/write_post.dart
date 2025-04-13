@@ -8,8 +8,84 @@ class WritePost extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('Write Post'),
+        title: Text('오늘의 야구 일기'),
         centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Icon(Icons.check, color: Colors.black, size: 24),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    TextField(
+                      decoration: InputDecoration(
+                        hintText: '제목을 입력하세요',
+                        border: UnderlineInputBorder(),
+                        contentPadding: EdgeInsets.all(16),
+                      ),
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    SizedBox(height: 16),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text("🥰"),
+                        Text("🙂"),
+                        Text("🥲"),
+                        Text("😭"),
+                        Text("😫"),
+                      ],
+                    ),
+
+                    SizedBox(height: 16),
+                    Container(
+                      height: 200,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: Colors.grey),
+                      ),
+                      child: TextField(
+                        maxLines: null,
+                        expands: true,
+                        decoration: InputDecoration(
+                          hintText: '내용을 입력하세요',
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.all(16),
+                        ),
+                        style: TextStyle(fontSize: 14),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 120,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: Colors.grey),
+                      ),
+                      child: Text('오늘의 사진'),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
