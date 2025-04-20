@@ -82,7 +82,7 @@ class _EmailScreenState extends State<EmailScreen> {
                 NextButton(
                   color:
                       _email.isNotEmpty && _isEmailValid() == null
-                          ? Colors.black
+                          ? Theme.of(context).primaryColor
                           : Colors.grey,
                   text: 'Next',
                   onPressed: () => _onSubmit(),

@@ -8,7 +8,10 @@ class WritePost extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('오늘의 야구 일기'),
+        title: Text(
+          '오늘의 야구 일기',
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(

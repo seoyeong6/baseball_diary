@@ -18,6 +18,7 @@ class _DetailBottomSheetState extends State<DetailBottomSheet> {
 
   void _onPressSave() {
     //TODO: 저장 로직 추가
+    //TODO: 저장하시겠습니까? 묻기
     Navigator.of(context).pop();
   }
 
@@ -34,9 +35,12 @@ class _DetailBottomSheetState extends State<DetailBottomSheet> {
       child: SafeArea(
         child: Scaffold(
           appBar: AppBar(
-            title: Text('야구 일기'),
+            title: Text(
+              '야구 일기',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
             actions: [
-              IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
+              IconButton(onPressed: _onPressEdit, icon: Icon(Icons.edit)),
               IconButton(onPressed: _onPressDelete, icon: Icon(Icons.close)),
             ],
             centerTitle: true,
@@ -45,37 +49,25 @@ class _DetailBottomSheetState extends State<DetailBottomSheet> {
           body: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TextField(
-                  decoration: InputDecoration(hintText: 'title'),
-                  maxLines: 1,
+                Text(
+                  '제목',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  cursorColor: Colors.black,
+                  maxLines: 1,
                   textAlign: TextAlign.start,
                 ),
-                TextField(
-                  decoration: InputDecoration(
-                    hintText: '여기에 클릭한 일기의 내용이 나오도록 해야함.',
-                  ),
-                  maxLines: 10,
+                Text(
+                  '여기에 클릭한 일기의 내용이 나오도록 해야함.',
                   style: TextStyle(fontSize: 14),
-                  cursorColor: Colors.black,
+                  maxLines: 10,
                   textAlign: TextAlign.start,
                 ),
-                Container(width: 100, height: 100, color: Colors.grey),
-                const SizedBox(height: 24),
-                SizedBox(
-                  width: double.infinity,
-                  height: 40,
-                  child: TextButton(
-                    onPressed: _onPressSave,
-                    style: TextButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      foregroundColor: Colors.white,
-                    ),
-                    child: Text('완료'),
-                  ),
+                SizedBox(height: 16),
+                Center(
+                  child: Container(width: 200, height: 200, color: Colors.grey),
                 ),
+                const SizedBox(height: 24),
               ],
             ),
           ),

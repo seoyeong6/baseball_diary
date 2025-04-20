@@ -30,11 +30,9 @@ class NextButton extends StatelessWidget {
             children: [
               Text(
                 text,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(color: Colors.white),
               ),
             ],
           ),

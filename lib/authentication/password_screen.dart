@@ -150,7 +150,10 @@ class _PasswordScreenState extends State<PasswordScreen> {
 
                 SizedBox(height: 40),
                 NextButton(
-                  color: _isPasswordValid() ? Colors.black : Colors.grey,
+                  color:
+                      _isPasswordValid()
+                          ? Theme.of(context).primaryColor
+                          : Colors.grey,
                   text: 'Next',
                   onPressed: () => _onSubmit(),
                 ),
