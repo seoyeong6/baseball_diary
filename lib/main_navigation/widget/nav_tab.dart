@@ -31,7 +31,9 @@ class NavTab extends StatelessWidget {
                 const SizedBox(height: 5),
                 Text(
                   text,
-                  style: const TextStyle(color: Colors.white, fontSize: 12),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.labelSmall?.copyWith(color: Colors.white),
                 ),
               ],
             ),

@@ -35,7 +35,9 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
     return GestureDetector(
       onTap: () => _onScaffoldTap(),
       child: Scaffold(
-        appBar: AppBar(title: Text('Log in')),
+        appBar: AppBar(
+          title: Text('로그인', style: Theme.of(context).textTheme.headlineSmall),
+        ),
         body: Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(
@@ -50,7 +52,7 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
                     height: 50,
                     child: TextFormField(
                       decoration: InputDecoration(
-                        hintText: 'Email',
+                        hintText: '이메일',
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey.shade400),
                         ),
@@ -77,7 +79,7 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
                     height: 50,
                     child: TextFormField(
                       decoration: InputDecoration(
-                        hintText: 'Password',
+                        hintText: '비밀번호',
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey.shade400),
                         ),
@@ -100,8 +102,8 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
                   ),
                   SizedBox(height: 28),
                   NextButton(
-                    color: Colors.black,
-                    text: 'Log in',
+                    color: Theme.of(context).primaryColor,
+                    text: '로그인',
                     onPressed: () => _onSubmit(),
                   ),
                 ],

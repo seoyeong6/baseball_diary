@@ -35,7 +35,10 @@ class _DetailBottomSheetState extends State<DetailBottomSheet> {
       child: SafeArea(
         child: Scaffold(
           appBar: AppBar(
-            title: Text('야구 일기'),
+            title: Text(
+              '야구 일기',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
             actions: [
               IconButton(onPressed: _onPressEdit, icon: Icon(Icons.edit)),
               IconButton(onPressed: _onPressDelete, icon: Icon(Icons.close)),

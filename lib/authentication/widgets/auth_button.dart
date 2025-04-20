@@ -19,7 +19,11 @@ class AuthButton extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [FaIcon(icon, size: 25), SizedBox(width: 10), Text(text)],
+          children: [
+            FaIcon(icon, size: 25),
+            SizedBox(width: 10),
+            Text(text, style: Theme.of(context).textTheme.labelLarge),
+          ],
         ),
       ),
     );

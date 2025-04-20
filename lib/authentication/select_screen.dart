@@ -20,7 +20,10 @@ class SelectScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Select Team'), centerTitle: true),
+      appBar: AppBar(
+        title: Text('팀 선택', style: Theme.of(context).textTheme.headlineSmall),
+        centerTitle: true,
+      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(30.0),
@@ -32,7 +35,7 @@ class SelectScreen extends StatelessWidget {
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                       builder: (context) => MainNavigationScreen(),
@@ -50,17 +53,11 @@ class SelectScreen extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                          Icons.sports_baseball_outlined,
-                          color: Colors.black87,
-                        ),
+                        Icon(Icons.sports_baseball_outlined),
                         SizedBox(width: 10),
                         Text(
                           teams[index],
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ],
                     ),

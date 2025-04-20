@@ -21,7 +21,9 @@ class SignupScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Sign up')),
+      appBar: AppBar(
+        title: Text('회원가입', style: Theme.of(context).textTheme.headlineSmall),
+      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -29,7 +31,7 @@ class SignupScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(height: 40),
-              FaIcon(FontAwesomeIcons.baseball, size: 50),
+              Icon(Icons.sports_baseball_sharp, size: 50),
               SizedBox(height: 80),
               GestureDetector(
                 onTap: () => _onEmailScreenTap(context),
@@ -53,13 +55,12 @@ class SignupScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        color: Colors.grey[200],
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Center(
             child: NextButton(
               color: Colors.black,
-              text: 'Log in',
+              text: '로그인 페이지로 돌아가기',
               onPressed: () => _onPressed(context),
             ),
           ),
