@@ -5,10 +5,15 @@ import 'route_const.dart';
 
 final router = GoRouter(
   routes: [
-    GoRoute(path: selectRoute, builder: (context, state) => SelectScreen()),
+    GoRoute(
+      path: selectRoute,
+      name: selectRouteName,
+      builder: (context, state) => SelectScreen(),
+    ),
     GoRoute(
       path: mainNavigationRoute,
-      builder: (context, state) => MainNavigationScreen(),
+      name: mainNavigationRouteName,
+      builder: (context, state) => const MainNavigationScreen(),
     ),
   ],
 );
