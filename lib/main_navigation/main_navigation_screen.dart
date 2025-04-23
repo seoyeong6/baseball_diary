@@ -6,6 +6,8 @@ import 'package:baseball_diary/main_navigation/widget/nav_tab.dart';
 import 'package:baseball_diary/menu/write_post.dart';
 
 class MainNavigationScreen extends StatefulWidget {
+  static const String routeName = '/main';
+
   const MainNavigationScreen({super.key});
 
   @override

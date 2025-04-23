@@ -1,7 +1,10 @@
 import 'package:baseball_diary/main_navigation/main_navigation_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class SelectScreen extends StatelessWidget {
+  static const String routeName = '/';
+
   SelectScreen({super.key});
 
   final List<String> teams = [
@@ -35,12 +38,7 @@ class SelectScreen extends StatelessWidget {
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MainNavigationScreen(),
-                    ),
-                  );
+                  context.go(MainNavigationScreen.routeName);
                 },
                 child: Container(
                   decoration: BoxDecoration(
