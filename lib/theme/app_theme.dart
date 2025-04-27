@@ -2,40 +2,82 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
+  // 라이트 모드 색상 팔레트
+  static const Color lightBackgroundColor = Colors.white;
+  static const Color lightSurfaceColor = Color(0xFFF5F5F5);
+  static const Color lightPrimaryColor = Color(0xFF1E2022);
+  static const Color lightTextColor = Colors.black87;
+  static const Color lightAccentColor = Colors.blueAccent;
+  static const Color lightErrorColor = Color(0xFFB00020);
+  static const Color lightSuccessColor = Color(0xFF4CAF50);
+  static const Color lightWarningColor = Color(0xFFFFC107);
+  static const Color lightDisabledColor = Color(0xFF9E9E9E);
+
+  // 다크 모드 색상 팔레트
+  static const Color darkBackgroundColor = Color(0xFF121212);
+  static const Color darkSurfaceColor = Color(0xFF1E1E1E);
+  static const Color darkPrimaryColor = Color(0xFF52616A);
+  static const Color darkTextColor = Colors.white;
+  static const Color darkAccentColor = Colors.lightBlueAccent;
+  static const Color darkErrorColor = Color(0xFFCF6679);
+  static const Color darkSuccessColor = Color(0xFF81C784);
+  static const Color darkWarningColor = Color(0xFFFFD54F);
+  static const Color darkDisabledColor = Color(0xFF757575);
+
   static ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
     textTheme: _textTheme(),
     appBarTheme: const AppBarTheme(
-      backgroundColor: Colors.white,
-      foregroundColor: Colors.black,
+      backgroundColor: lightBackgroundColor,
+      foregroundColor: lightTextColor,
       elevation: 0,
       titleTextStyle: TextStyle(
-        color: Colors.black,
+        color: lightTextColor,
         fontSize: 18,
         fontWeight: FontWeight.bold,
       ),
     ),
-    scaffoldBackgroundColor: Colors.white,
-    primaryColor: const Color(0xFF1E2022),
-    bottomAppBarTheme: const BottomAppBarTheme(color: Colors.white),
+    scaffoldBackgroundColor: lightBackgroundColor,
+    primaryColor: lightPrimaryColor,
+    bottomAppBarTheme: const BottomAppBarTheme(color: lightBackgroundColor),
+    colorScheme: ColorScheme.light(
+      surface: lightSurfaceColor,
+      primary: lightPrimaryColor,
+      secondary: lightAccentColor,
+      error: lightErrorColor,
+      onSurface: lightTextColor,
+      onPrimary: Colors.white,
+      onSecondary: Colors.white,
+      onError: Colors.white,
+    ),
   );
 
   static ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
     textTheme: _textTheme(),
-    appBarTheme: AppBarTheme(
-      backgroundColor: Colors.grey.shade900,
-      foregroundColor: Colors.white,
+    appBarTheme: const AppBarTheme(
+      backgroundColor: darkBackgroundColor,
+      foregroundColor: darkTextColor,
       elevation: 0,
-      titleTextStyle: const TextStyle(
-        color: Colors.white,
+      titleTextStyle: TextStyle(
+        color: darkTextColor,
         fontSize: 18,
         fontWeight: FontWeight.bold,
       ),
     ),
-    scaffoldBackgroundColor: Colors.black,
-    primaryColor: const Color(0xFF52616A),
-    bottomAppBarTheme: BottomAppBarTheme(color: Colors.grey.shade900),
+    scaffoldBackgroundColor: darkBackgroundColor,
+    primaryColor: darkPrimaryColor,
+    bottomAppBarTheme: const BottomAppBarTheme(color: darkBackgroundColor),
+    colorScheme: ColorScheme.dark(
+      surface: darkSurfaceColor,
+      primary: darkPrimaryColor,
+      secondary: darkAccentColor,
+      error: darkErrorColor,
+      onSurface: darkTextColor,
+      onPrimary: Colors.white,
+      onSecondary: Colors.white,
+      onError: Colors.white,
+    ),
   );
 
   static TextTheme _textTheme() {
