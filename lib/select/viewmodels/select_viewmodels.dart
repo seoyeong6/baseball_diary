@@ -14,5 +14,9 @@ class SelectViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<String> getTeam() async {
+    return await _repository.getTeam();
+  }
+
   List<String> get teams => _teams;
 }
