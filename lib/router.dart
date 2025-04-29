@@ -1,5 +1,5 @@
 import 'package:go_router/go_router.dart';
-import 'package:baseball_diary/authentication/select_screen.dart';
+import 'package:baseball_diary/select/views/select_screen.dart';
 import 'package:baseball_diary/main_navigation/main_navigation_screen.dart';
 import 'route_const.dart';
 

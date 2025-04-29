@@ -1,24 +1,12 @@
 import 'package:baseball_diary/main_navigation/main_navigation_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:baseball_diary/select/models/select_models.dart';
 
 class SelectScreen extends StatelessWidget {
   static const String routeName = '/';
 
-  SelectScreen({super.key});
-
-  final List<String> teams = [
-    'KIA 타이거즈',
-    '롯데 자이언츠',
-    '두산 베어스',
-    '삼성 라이온즈',
-    '한화 이글스',
-    '키움 히어로즈',
-    'KT 위즈',
-    'LG 트윈스',
-    'NC 다이노스',
-    'SSG 랜더스',
-  ];
+  const SelectScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +22,7 @@ class SelectScreen extends StatelessWidget {
             separatorBuilder: (context, index) {
               return SizedBox(height: 15);
             },
-            itemCount: teams.length,
+            itemCount: SelectModel().teams.length,
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
@@ -54,7 +42,7 @@ class SelectScreen extends StatelessWidget {
                         Icon(Icons.sports_baseball_outlined),
                         SizedBox(width: 10),
                         Text(
-                          teams[index],
+                          SelectModel().teams[index],
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ],
