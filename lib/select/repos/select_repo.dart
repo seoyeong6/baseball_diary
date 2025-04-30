@@ -9,7 +9,7 @@ class SelectRepository {
     await _preferences.setString('team', team);
   }
 
-  Future<String> getTeam() async {
+  String getTeam() {
     return _preferences.getString('team') ?? '';
   }
 }
