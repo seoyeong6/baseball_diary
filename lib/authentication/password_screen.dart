@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:baseball_diary/authentication/widgets/next_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:baseball_diary/authentication/select_screen.dart';
+import 'package:baseball_diary/select/views/select_screen.dart';
 
 class PasswordScreen extends StatefulWidget {
   const PasswordScreen({super.key});
