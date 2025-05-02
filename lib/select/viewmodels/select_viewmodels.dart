@@ -1,21 +1,26 @@
-import 'package:flutter/material.dart';
 import 'package:baseball_diary/select/repos/select_repo.dart';
 import 'package:baseball_diary/select/models/select_models.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:baseball_diary/core/preferences_service.dart';
 
-class SelectViewModel extends ChangeNotifier {
-  final SelectRepository _repository;
+class SelectViewModel extends Notifier<String> {
+  late final SelectRepository _repository;
+  late final List<String> _teams;
 
-  late final List<String> _teams = SelectModel().teams;
-
-  SelectViewModel(this._repository);
+  @override
+  String build() {
+    _repository = SelectRepository(PreferencesService.preferences);
+    _teams = SelectModel().teams;
+    return _repository.getTeam();
+  }
 
   Future<void> setTeam(String team) async {
     await _repository.saveTeam(team);
-    notifyListeners();
+    state = team;
   }
 
   String getTeam() {
-    return _repository.getTeam();
+    return state;
   }
 
   List<String> get teams => _teams;
