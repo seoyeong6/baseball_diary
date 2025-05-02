@@ -19,9 +19,10 @@ class SelectViewModel extends Notifier<String> {
     state = team;
   }
 
-  String getTeam() {
-    return state;
-  }
-
+  String getTeam() => state;
   List<String> get teams => _teams;
 }
+
+final selectViewModelProvider = NotifierProvider<SelectViewModel, String>(() {
+  return SelectViewModel();
+});

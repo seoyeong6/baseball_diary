@@ -1,9 +1,8 @@
-import 'package:baseball_diary/main_navigation/main_navigation_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:baseball_diary/select/viewmodels/select_viewmodels.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:baseball_diary/app/my_app.dart';
+import 'package:go_router/go_router.dart';
+import 'package:baseball_diary/main_navigation/main_navigation_screen.dart';
+import 'package:baseball_diary/select/viewmodels/select_viewmodels.dart';
 
 class SelectScreen extends ConsumerWidget {
   static const String routeName = '/';
