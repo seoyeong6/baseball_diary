@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:baseball_diary/app/my_app.dart';
 
-class WritePost extends StatelessWidget {
+class WritePost extends ConsumerWidget {
   const WritePost({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedTeam = ref.watch(selectViewModelProvider);
+    final teamName = selectedTeam.split(' ').first;
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -13,6 +18,10 @@ class WritePost extends StatelessWidget {
           style: Theme.of(context).textTheme.titleMedium,
         ),
         centerTitle: true,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 24.0),
+          child: Text(teamName, style: Theme.of(context).textTheme.titleSmall),
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(

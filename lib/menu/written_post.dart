@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:baseball_diary/main_navigation/widget/detail_bottom_sheet.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:baseball_diary/app/my_app.dart';
 
-class WrittenPost extends StatelessWidget {
+class WrittenPost extends ConsumerWidget {
   const WrittenPost({super.key});
 
   void _onDetailTap(BuildContext context) async {
@@ -14,12 +16,19 @@ class WrittenPost extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedTeam = ref.watch(selectViewModelProvider);
+    final teamName = selectedTeam.split(' ').first;
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text('나의 야구 일기', style: Theme.of(context).textTheme.titleMedium),
         centerTitle: true,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 24.0),
+          child: Text(teamName, style: Theme.of(context).textTheme.titleSmall),
+        ),
       ),
       body: Column(
         children: [
