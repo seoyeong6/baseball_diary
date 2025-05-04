@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:baseball_diary/app/my_app.dart';
+import 'package:baseball_diary/select/viewmodels/select_viewmodels.dart';
 
 class WritePost extends ConsumerWidget {
   const WritePost({super.key});
@@ -52,14 +52,35 @@ class WritePost extends ConsumerWidget {
                     ),
                     SizedBox(height: 16),
 
+                    SizedBox(height: 16),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text("🥰"),
-                        Text("🙂"),
-                        Text("🥲"),
-                        Text("😭"),
-                        Text("😫"),
+                        Image.asset(
+                          'assets/images/happy1.png',
+                          width: 30,
+                          height: 30,
+                        ),
+                        Image.asset(
+                          'assets/images/happy2.png',
+                          width: 30,
+                          height: 30,
+                        ),
+                        Image.asset(
+                          'assets/images/pale.png',
+                          width: 30,
+                          height: 30,
+                        ),
+                        Image.asset(
+                          'assets/images/despair.png',
+                          width: 30,
+                          height: 30,
+                        ),
+                        Image.asset(
+                          'assets/images/angry.png',
+                          width: 30,
+                          height: 30,
+                        ),
                       ],
                     ),
 
