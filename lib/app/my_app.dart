@@ -6,10 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:baseball_diary/select/viewmodels/select_viewmodels.dart';
 import 'package:baseball_diary/theme/theme_viewmodel.dart';
 
-final selectViewModelProvider = NotifierProvider<SelectViewModel, String>(() {
-  return SelectViewModel();
-});
-
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 

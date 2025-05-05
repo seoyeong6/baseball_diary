@@ -46,3 +46,7 @@ app.*.map.json
 
 # VS Code 관련 설정 제외
 .vscode/
+
+# firebase 관련 설정 제외
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
