@@ -50,3 +50,4 @@ app.*.map.json
 # firebase 관련 설정 제외
 android/app/google-services.json
 ios/Runner/GoogleService-Info.plist
+lib/firebase_options.dart
