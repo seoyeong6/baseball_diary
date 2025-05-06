@@ -1,16 +1,18 @@
+import 'package:baseball_diary/authentication/viewmodels/signup_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:baseball_diary/authentication/widgets/next_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:baseball_diary/select/views/select_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class PasswordScreen extends StatefulWidget {
+class PasswordScreen extends ConsumerStatefulWidget {
   const PasswordScreen({super.key});
 
   @override
-  State<PasswordScreen> createState() => _PasswordScreenState();
+  ConsumerState<PasswordScreen> createState() => _PasswordScreenState();
 }
 
-class _PasswordScreenState extends State<PasswordScreen> {
+class _PasswordScreenState extends ConsumerState<PasswordScreen> {
   final TextEditingController _passwordController = TextEditingController();
 
   String _password = '';
@@ -37,12 +39,27 @@ class _PasswordScreenState extends State<PasswordScreen> {
     FocusScope.of(context).unfocus();
   }
 
-  void _onSubmit() {
+  void _onSubmit() async {
     if (!_isPasswordValid()) return;
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => SelectScreen()),
-    );
+
+    final form = ref.read(signUpForm);
+    final email = form["email"];
+    final password = _password;
+
+    if (email == null) return;
+
+    ref.read(signUpForm.notifier).state = {...form, "password": password};
+
+    // ✅ Firebase에 회원가입 시도
+    await ref.read(signUpViewModelProvider.notifier).signUp();
+
+    // 👉 회원가입 성공하면 다음 화면으로
+    if (context.mounted) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => SelectScreen()),
+      );
+    }
   }
 
   bool _isPasswordValid() {

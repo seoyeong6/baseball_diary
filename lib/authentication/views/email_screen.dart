@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:baseball_diary/authentication/widgets/textfield_widget.dart';
 import 'package:baseball_diary/authentication/widgets/next_button.dart';
-import 'package:baseball_diary/authentication/password_screen.dart';
+import 'package:baseball_diary/authentication/views/password_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:baseball_diary/authentication/viewmodels/signup_viewmodel.dart';
 
-class EmailScreen extends StatefulWidget {
-  const EmailScreen({super.key});
+class EmailScreen extends ConsumerStatefulWidget {
+  final String username;
+  const EmailScreen({super.key, required this.username});
 
   @override
-  State<EmailScreen> createState() => _EmailScreenState();
+  ConsumerState<EmailScreen> createState() => _EmailScreenState();
 }
 
-class _EmailScreenState extends State<EmailScreen> {
+class _EmailScreenState extends ConsumerState<EmailScreen> {
   final TextEditingController _emailController = TextEditingController();
 
   String _email = '';
@@ -37,6 +40,7 @@ class _EmailScreenState extends State<EmailScreen> {
 
   void _onSubmit() {
     if (_email.isEmpty || _isEmailValid() != null) return;
+    ref.read(signUpForm.notifier).state = {"email": _email};
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => PasswordScreen()),

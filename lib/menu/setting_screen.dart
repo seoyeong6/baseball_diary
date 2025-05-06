@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:baseball_diary/select/viewmodels/select_viewmodels.dart';
 import 'package:baseball_diary/theme/theme_viewmodel.dart';
+import 'package:baseball_diary/route_const.dart';
 
 class SettingScreen extends ConsumerWidget {
   const SettingScreen({super.key});
@@ -31,7 +32,7 @@ class SettingScreen extends ConsumerWidget {
               '로그인(백업용)',
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            onTap: () {},
+            onTap: () => GoRouter.of(context).push(loginRoute),
             trailing: const Icon(Icons.arrow_forward_ios),
           ),
           ListTile(
