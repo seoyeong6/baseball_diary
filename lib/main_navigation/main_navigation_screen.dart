@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:baseball_diary/main_navigation/widget/nav_tab.dart';
 import 'package:baseball_diary/menu/write_post.dart';
+import 'package:baseball_diary/menu/setting_screen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   static const String routeName = '/main';
@@ -45,10 +46,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             offstage: _selectedIndex != 3,
             child: screens[_selectedIndex],
           ),
-          Offstage(
-            offstage: _selectedIndex != 4,
-            child: screens[_selectedIndex],
-          ),
+          Offstage(offstage: _selectedIndex != 4, child: const SettingScreen()),
         ],
       ),
       bottomNavigationBar: BottomAppBar(

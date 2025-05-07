@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:baseball_diary/select/viewmodels/select_viewmodels.dart';
+import 'package:baseball_diary/menu/write_post/view/emotion_images.dart';
 
-class WritePost extends StatelessWidget {
+class WritePost extends ConsumerWidget {
   const WritePost({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedTeam = ref.watch(selectViewModelProvider);
+    final teamName = selectedTeam.split(' ').first;
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -13,6 +19,10 @@ class WritePost extends StatelessWidget {
           style: Theme.of(context).textTheme.titleMedium,
         ),
         centerTitle: true,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 24.0),
+          child: Text(teamName, style: Theme.of(context).textTheme.titleSmall),
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -43,15 +53,19 @@ class WritePost extends StatelessWidget {
                     ),
                     SizedBox(height: 16),
 
+                    SizedBox(height: 16),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text("🥰"),
-                        Text("🙂"),
-                        Text("🥲"),
-                        Text("😭"),
-                        Text("😫"),
-                      ],
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children:
+                          EmotionImages.paths
+                              .map(
+                                (path) => Image.asset(
+                                  path,
+                                  width: EmotionImages.size,
+                                  height: EmotionImages.size,
+                                ),
+                              )
+                              .toList(),
                     ),
 
                     SizedBox(height: 16),
