@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:baseball_diary/authentication/widgets/next_button.dart';
 import 'package:baseball_diary/select/views/select_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LoginFormScreen extends StatefulWidget {
+class LoginFormScreen extends ConsumerStatefulWidget {
   const LoginFormScreen({super.key});
 
   @override
-  State<LoginFormScreen> createState() => _LoginFormScreenState();
+  ConsumerState<LoginFormScreen> createState() => _LoginFormScreenState();
 }
 
-class _LoginFormScreenState extends State<LoginFormScreen> {
+class _LoginFormScreenState extends ConsumerState<LoginFormScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final Map<String, String> formData = {};
@@ -18,15 +20,52 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
     FocusScope.of(context).unfocus();
   }
 
-  void _onSubmit() {
-    if (_formKey.currentState != null) {
-      if (_formKey.currentState!.validate()) {
-        _formKey.currentState!.save();
+  void _onSubmit() async {
+    if (_formKey.currentState != null && _formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+
+      final email = formData['email'];
+      final password = formData['password'];
+
+      if (email == null || password == null) return;
+
+      try {
+        // ✅ Firebase 로그인 실행
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+
+        if (context.mounted) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => SelectScreen()),
+          );
+        }
+      } on FirebaseAuthException catch (e) {
+        // ❗ 로그인 실패 시 에러 처리
+        String message = '로그인에 실패했습니다.';
+        if (e.code == 'user-not-found') {
+          message = '존재하지 않는 이메일입니다.';
+        } else if (e.code == 'wrong-password') {
+          message = '비밀번호가 틀렸습니다.';
+        }
+
+        showDialog(
+          context: context,
+          builder:
+              (context) => AlertDialog(
+                title: const Text('로그인 실패'),
+                content: Text(message),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('확인'),
+                  ),
+                ],
+              ),
+        );
       }
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => SelectScreen()),
-      );
     }
   }
 
