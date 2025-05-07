@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:baseball_diary/select/viewmodels/select_viewmodels.dart';
+import 'package:baseball_diary/menu/write_post/view/emotion_images.dart';
 
 class WritePost extends ConsumerWidget {
   const WritePost({super.key});
@@ -55,33 +56,16 @@ class WritePost extends ConsumerWidget {
                     SizedBox(height: 16),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Image.asset(
-                          'assets/images/happy1.png',
-                          width: 30,
-                          height: 30,
-                        ),
-                        Image.asset(
-                          'assets/images/happy2.png',
-                          width: 30,
-                          height: 30,
-                        ),
-                        Image.asset(
-                          'assets/images/pale.png',
-                          width: 30,
-                          height: 30,
-                        ),
-                        Image.asset(
-                          'assets/images/despair.png',
-                          width: 30,
-                          height: 30,
-                        ),
-                        Image.asset(
-                          'assets/images/angry.png',
-                          width: 30,
-                          height: 30,
-                        ),
-                      ],
+                      children:
+                          EmotionImages.paths
+                              .map(
+                                (path) => Image.asset(
+                                  path,
+                                  width: EmotionImages.size,
+                                  height: EmotionImages.size,
+                                ),
+                              )
+                              .toList(),
                     ),
 
                     SizedBox(height: 16),

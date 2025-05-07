@@ -18,7 +18,8 @@ class WrittenPost extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedTeam = ref.watch(selectViewModelProvider);
-    final teamName = selectedTeam.split(' ').first;
+    final teamName =
+        selectedTeam.trim().isNotEmpty ? selectedTeam.split(' ').first : '???';
 
     return Scaffold(
       appBar: AppBar(
