@@ -82,7 +82,7 @@ class SettingScreen extends ConsumerWidget {
                   '팀 변경',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
-                onTap: () => GoRouter.of(context).push('/'),
+                onTap: () => GoRouter.of(context).pushNamed('select'),
                 trailing: const Icon(Icons.arrow_forward_ios),
               ),
               SwitchListTile(

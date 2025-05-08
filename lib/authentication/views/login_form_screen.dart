@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:baseball_diary/authentication/widgets/next_button.dart';
-import 'package:baseball_diary/select/views/select_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:go_router/go_router.dart';
+import 'package:baseball_diary/route_const.dart';
 
 class LoginFormScreen extends ConsumerStatefulWidget {
   const LoginFormScreen({super.key});
@@ -37,10 +39,12 @@ class _LoginFormScreenState extends ConsumerState<LoginFormScreen> {
         );
 
         if (context.mounted) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => SelectScreen()),
-          );
+          final prefs = await SharedPreferences.getInstance();
+          final hasTeam = prefs.getBool('hasSelectedTeam') ?? false;
+
+          if (context.mounted) {
+            context.go(hasTeam ? mainNavigationRoute : selectRoute);
+          }
         }
       } on FirebaseAuthException catch (e) {
         // ❗ 로그인 실패 시 에러 처리

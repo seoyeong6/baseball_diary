@@ -17,6 +17,9 @@ class SelectViewModel extends Notifier<String> {
   Future<void> setTeam(String team) async {
     await _repository.saveTeam(team);
     state = team;
+
+    // ✅ 팀 선택 완료 플래그 저장
+    await PreferencesService.preferences.setBool('hasSelectedTeam', true);
   }
 
   String getTeam() => state;
