@@ -1,4 +1,4 @@
-import 'package:baseball_diary/menu/written_post.dart';
+import 'package:baseball_diary/menu/written_post/view/written_post.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:baseball_diary/main_navigation/widget/nav_tab.dart';
