@@ -16,8 +16,9 @@ class SelectRepository {
   }
 }
 
-/// ✅ PreferencesService를 주입받는 Provider
+/// ✅ PreferencesService를 지연 평가 방식으로 주입받는 Provider
 final selectRepositoryProvider = Provider<SelectRepository>((ref) {
-  final preferencesService = ref.watch(preferencesServiceProvider);
+  // ❗ 반드시 read() 사용: 평가 시점 지연
+  final preferencesService = ref.read(preferencesServiceProvider);
   return SelectRepository(preferencesService);
 });

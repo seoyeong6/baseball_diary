@@ -8,7 +8,7 @@ class SelectViewModel extends Notifier<String> {
 
   @override
   String build() {
-    _repository = ref.watch(selectRepositoryProvider); // ✅ 의존성 주입
+    _repository = ref.read(selectRepositoryProvider); // ✅ 지연 평가
     _teams = SelectModel().teams;
     return _repository.getTeam();
   }

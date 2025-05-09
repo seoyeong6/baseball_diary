@@ -15,13 +15,13 @@ void main() async {
   final prefs = await SharedPreferences.getInstance();
 
   runApp(
-    ProviderScope(
-      overrides: [sharedPreferencesProvider.overrideWithValue(prefs)],
-      child: DevicePreview(
-        enabled: !kReleaseMode,
-        builder:
-            (context) => const MyApp(), // ✅ MaterialApp.router가 포함된 MyApp 사용
-      ),
+    DevicePreview(
+      enabled: !kReleaseMode,
+      builder:
+          (context) => ProviderScope(
+            overrides: [sharedPreferencesProvider.overrideWithValue(prefs)],
+            child: const MyApp(),
+          ),
     ),
   );
 }

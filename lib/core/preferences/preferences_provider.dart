@@ -4,7 +4,6 @@ import 'preferences_service.dart';
 
 /// main.dart에서 override되는 SharedPreferences provider
 final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
-  print("❌ sharedPreferencesProvider evaluated before override");
   throw UnimplementedError(); // main.dart에서 override할 예정
 });
 

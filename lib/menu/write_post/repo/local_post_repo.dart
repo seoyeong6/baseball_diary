@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:baseball_diary/menu/write_post/models/post_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:baseball_diary/core/preferences/preferences_provider.dart';
 
 class LocalPostRepository {
   final SharedPreferences _prefs;
@@ -29,12 +30,7 @@ class LocalPostRepository {
   }
 }
 
-final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
-  throw UnimplementedError(); // main.dart에서 override할 예정
-});
-
 final localPostRepoProvider = Provider<LocalPostRepository>((ref) {
-  print("✅ localPostRepoProvider evaluated");
   final prefs = ref.watch(sharedPreferencesProvider);
   return LocalPostRepository(prefs);
 });

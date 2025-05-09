@@ -74,12 +74,10 @@ class WritePostViewModel extends StateNotifier<PostModel> {
         // 🔹 비로그인: 로컬 저장
         final localRepo = ref.read(localPostRepoProvider);
         await localRepo.savePost(state);
-        print("✅ 로컬에 저장되었습니다.");
       } else {
         // 🔹 로그인: Firebase 저장
         final repo = ref.read(postRepoProvider);
         await repo.savePost(state);
-        print("✅ Firebase에 저장되었습니다.");
       }
     } catch (e, stack) {
       print("❌ 저장 중 에러 발생: $e");
