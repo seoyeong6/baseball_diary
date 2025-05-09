@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:baseball_diary/main_navigation/widget/detail_bottom_sheet.dart';
+import 'package:baseball_diary/menu/written_post/widgets/detail_bottom_sheet.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:baseball_diary/select/viewmodels/select_viewmodels.dart';
+import 'package:baseball_diary/menu/written_post/viewmodels/written_post_viewmodel.dart';
+import 'package:baseball_diary/menu/write_post/models/post_model.dart';
+import 'package:baseball_diary/menu/written_post/widgets/detail_bottom_sheet.dart';
 
 class WrittenPostScreen extends ConsumerWidget {
   const WrittenPostScreen({super.key});
 
-  void _onDetailTap(BuildContext context) async {
+  void _onDetailTap(BuildContext context, PostModel post) async {
     await showModalBottomSheet(
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       context: context,
-      builder: (context) => const DetailBottomSheet(),
+      builder: (context) => DetailBottomSheet(post: post),
     );
   }
 
@@ -20,6 +23,7 @@ class WrittenPostScreen extends ConsumerWidget {
     final selectedTeam = ref.watch(selectViewModelProvider);
     final teamName =
         selectedTeam.trim().isNotEmpty ? selectedTeam.split(' ').first : '???';
+    final postsAsync = ref.watch(writtenPostProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -44,69 +48,80 @@ class WrittenPostScreen extends ConsumerWidget {
             ],
           ),
           Expanded(
-            child: ListView.separated(
-              itemCount: 5,
-              separatorBuilder: (context, index) {
-                return const SizedBox(height: 24);
-              },
-              padding: const EdgeInsets.all(16.0),
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () => _onDetailTap(context),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CircleAvatar(
-                            radius: 20,
-                            backgroundColor: Colors.grey,
-                            child: Icon(
-                              Icons.sports_baseball_sharp,
-                              color: Colors.white,
-                              size: 20,
-                            ),
+            child: postsAsync.when(
+              data: (posts) {
+                if (posts.isEmpty) {
+                  return Center(child: Text('작성된 일기가 없습니다.'));
+                }
+
+                return ListView.separated(
+                  itemCount: posts.length,
+                  separatorBuilder: (_, __) => SizedBox(height: 24),
+                  padding: const EdgeInsets.all(16.0),
+                  itemBuilder: (context, index) {
+                    final post = posts[index];
+                    return GestureDetector(
+                      onTap: () => _onDetailTap(context, post),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surface,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CircleAvatar(
+                                radius: 20,
+                                backgroundColor: Colors.grey,
+                                child: Icon(
+                                  Icons.sports_baseball_sharp,
+                                  color: Colors.white,
+                                  size: 20,
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '${post.createdAt.year}.${post.createdAt.month.toString().padLeft(2, '0')}.${post.createdAt.day.toString().padLeft(2, '0')}',
+                                      style: TextStyle(fontSize: 12),
+                                    ),
+                                    Text(
+                                      post.title,
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                      post.content,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(fontSize: 12),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Container(
+                                      width: 100,
+                                      height: 100,
+                                      color: Colors.grey,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'datetime',
-                                  style: TextStyle(fontSize: 12),
-                                ),
-                                Text(
-                                  'title',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(
-                                  '여기에 일기를 씁니다. 길게길게 써봅시다. 여기에 일기를 씁니다. 길게길게 써봅시다. 여기에 일기를 씁니다. 길게길게 써봅시다.',
-                                  style: TextStyle(fontSize: 12),
-                                ),
-                                const SizedBox(height: 8),
-                                Container(
-                                  width: 100,
-                                  height: 100,
-                                  color: Colors.grey,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                  },
                 );
               },
+              loading: () => Center(child: CircularProgressIndicator()),
+              error: (e, _) => Center(child: Text('에러 발생: $e')),
             ),
           ),
         ],

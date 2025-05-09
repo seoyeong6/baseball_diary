@@ -8,6 +8,16 @@ class PostRepository {
   Future<void> savePost(PostModel post) async {
     await _db.collection('posts').add(post.toJson());
   }
+
+  Future<List<PostModel>> fetchPosts() async {
+    final snapshot =
+        await _db
+            .collection('posts')
+            .orderBy('createdAt', descending: true)
+            .get();
+
+    return snapshot.docs.map((doc) => PostModel.fromJson(doc.data())).toList();
+  }
 }
 
 final postRepoProvider = Provider((ref) => PostRepository());

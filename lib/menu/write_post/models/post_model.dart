@@ -1,4 +1,4 @@
-// lib/menu/write_post/model/post_model.dart
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PostModel {
   final String title;
@@ -20,16 +20,30 @@ class PostModel {
     'title': title,
     'content': content,
     'emotion': emotion,
-    'createdAt': createdAt.toIso8601String(),
+    'createdAt': Timestamp.fromDate(createdAt),
     'userId': userId,
   };
 
   /// Firestore 또는 local에서 불러올 때 사용
-  factory PostModel.fromJson(Map<String, dynamic> json) => PostModel(
-    title: json['title'] as String,
-    content: json['content'] as String,
-    emotion: json['emotion'] as String,
-    createdAt: DateTime.parse(json['createdAt'] as String),
-    userId: json['userId'] as String?,
-  );
+  factory PostModel.fromJson(Map<String, dynamic> json) {
+    final rawCreatedAt = json['createdAt'];
+
+    DateTime createdAt;
+
+    if (rawCreatedAt is Timestamp) {
+      createdAt = rawCreatedAt.toDate();
+    } else if (rawCreatedAt is String) {
+      createdAt = DateTime.tryParse(rawCreatedAt) ?? DateTime.now();
+    } else {
+      createdAt = DateTime.now();
+    }
+
+    return PostModel(
+      title: json['title'] ?? '',
+      content: json['content'] ?? '',
+      emotion: json['emotion'] ?? '',
+      createdAt: createdAt,
+      userId: json['userId'],
+    );
+  }
 }
