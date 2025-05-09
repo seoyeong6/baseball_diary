@@ -20,7 +20,7 @@ class PostModel {
     'title': title,
     'content': content,
     'emotion': emotion,
-    'createdAt': Timestamp.fromDate(createdAt),
+    'createdAt': createdAt.toIso8601String(),
     'userId': userId,
   };
 

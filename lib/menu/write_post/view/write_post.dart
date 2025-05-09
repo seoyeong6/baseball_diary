@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:baseball_diary/select/viewmodels/select_viewmodels.dart';
 import 'package:baseball_diary/menu/write_post/view/emotion_images.dart';
 import 'package:baseball_diary/menu/write_post/viewmodels/write_post_viewmodel.dart';
-import 'package:baseball_diary/menu/written_post/view/written_post.dart';
+import 'package:baseball_diary/main_navigation/providers/bottom_tab_provider.dart';
+import 'package:baseball_diary/route_const.dart';
+import 'package:baseball_diary/menu/written_post/viewmodels/written_post_viewmodel.dart';
 
 class WritePost extends ConsumerWidget {
   const WritePost({super.key});
@@ -13,7 +16,7 @@ class WritePost extends ConsumerWidget {
     final selectedTeam = ref.watch(selectViewModelProvider);
     final teamName = selectedTeam.split(' ').first;
     final viewModel = ref.watch(writePostProvider.notifier);
-    final post = ref.watch(writePostProvider); // 선택된 상태 읽기
+    final post = ref.watch(writePostProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -47,7 +50,6 @@ class WritePost extends ConsumerWidget {
                       ],
                     ),
                     const SizedBox(height: 8),
-
                     TextField(
                       onChanged: (value) => viewModel.updateTitle(value),
                       decoration: InputDecoration(
@@ -57,8 +59,6 @@ class WritePost extends ConsumerWidget {
                       ),
                       style: TextStyle(fontSize: 14),
                     ),
-                    SizedBox(height: 16),
-
                     SizedBox(height: 16),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -77,7 +77,6 @@ class WritePost extends ConsumerWidget {
                             );
                           }).toList(),
                     ),
-
                     SizedBox(height: 16),
                     Container(
                       height: 200,
@@ -123,15 +122,17 @@ class WritePost extends ConsumerWidget {
             height: 48,
             child: ElevatedButton.icon(
               onPressed: () async {
-                ref.read(writePostProvider.notifier).save();
+                await ref.read(writePostProvider.notifier).save();
 
+                // ✅ 글 목록 강제 갱신
+                ref.invalidate(writtenPostProvider);
+
+                // ✅ 탭 이동
+                ref.read(bottomTabProvider.notifier).state = 1;
+
+                // ✅ 메인화면으로 이동
                 if (context.mounted) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const WrittenPostScreen(),
-                    ),
-                  );
+                  context.goNamed(mainNavigationRouteName);
                 }
               },
 

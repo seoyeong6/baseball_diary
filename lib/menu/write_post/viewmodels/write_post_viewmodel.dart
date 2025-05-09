@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:baseball_diary/menu/write_post/models/post_model.dart';
 import 'package:baseball_diary/menu/write_post/repo/post_repo.dart';
+import 'package:baseball_diary/menu/write_post/repo/local_post_repo.dart';
 
 class WritePostViewModel extends StateNotifier<PostModel> {
   final Ref ref;
@@ -56,9 +57,24 @@ class WritePostViewModel extends StateNotifier<PostModel> {
     );
   }
 
-  void save() async {
-    final repo = ref.read(postRepoProvider);
-    await repo.savePost(state);
+  Future<void> save() async {
+    final userId = state.userId;
+    try {
+      if (userId == null) {
+        // 🔹 비로그인: 로컬 저장
+        final localRepo = ref.read(localPostRepoProvider);
+        await localRepo.savePost(state);
+        print("✅ 로컬에 저장되었습니다.");
+      } else {
+        // 🔹 로그인: Firebase 저장
+        final repo = ref.read(postRepoProvider);
+        await repo.savePost(state);
+        print("✅ Firebase에 저장되었습니다.");
+      }
+    } catch (e, stack) {
+      print("❌ 저장 중 에러 발생: $e");
+      print(stack);
+    }
   }
 }
 
