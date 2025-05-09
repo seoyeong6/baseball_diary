@@ -2,7 +2,7 @@ import 'package:baseball_diary/menu/written_post.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:baseball_diary/main_navigation/widget/nav_tab.dart';
-import 'package:baseball_diary/menu/write_post.dart';
+import 'package:baseball_diary/menu/write_post/view/write_post.dart';
 import 'package:baseball_diary/menu/setting_screen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
@@ -40,7 +40,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             offstage: _selectedIndex != 0,
             child: screens[_selectedIndex],
           ),
-          Offstage(offstage: _selectedIndex != 1, child: const WrittenPost()),
+          Offstage(
+            offstage: _selectedIndex != 1,
+            child: const WrittenPostScreen(),
+          ),
           Offstage(offstage: _selectedIndex != 2, child: const WritePost()),
           Offstage(
             offstage: _selectedIndex != 3,

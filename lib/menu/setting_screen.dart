@@ -30,8 +30,6 @@ class SettingScreen extends ConsumerWidget {
       body: Consumer(
         builder: (context, ref, _) {
           final authState = ref.watch(authStreamProvider);
-          final selectedTeam = ref.watch(selectViewModelProvider);
-          final teamName = selectedTeam.split(' ').first;
           final isDarkMode = ref.watch(themeViewModelProvider);
           final themeViewModel = ref.watch(themeViewModelProvider.notifier);
 

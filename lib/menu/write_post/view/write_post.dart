@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:baseball_diary/select/viewmodels/select_viewmodels.dart';
 import 'package:baseball_diary/menu/write_post/view/emotion_images.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:baseball_diary/menu/write_post/viewmodels/write_post_viewmodel.dart';
+import 'package:baseball_diary/menu/written_post.dart';
 
 class WritePost extends ConsumerWidget {
   const WritePost({super.key});
@@ -10,6 +13,8 @@ class WritePost extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedTeam = ref.watch(selectViewModelProvider);
     final teamName = selectedTeam.split(' ').first;
+    final viewModel = ref.watch(writePostProvider.notifier);
+    final post = ref.watch(writePostProvider); // 선택된 상태 읽기
 
     return Scaffold(
       appBar: AppBar(
@@ -43,7 +48,9 @@ class WritePost extends ConsumerWidget {
                       ],
                     ),
                     const SizedBox(height: 8),
+
                     TextField(
+                      onChanged: (value) => viewModel.updateTitle(value),
                       decoration: InputDecoration(
                         hintText: '제목을 입력하세요',
                         border: UnderlineInputBorder(),
@@ -57,26 +64,31 @@ class WritePost extends ConsumerWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children:
-                          EmotionImages.paths
-                              .map(
-                                (path) => Image.asset(
-                                  path,
-                                  width: EmotionImages.size,
-                                  height: EmotionImages.size,
-                                ),
-                              )
-                              .toList(),
+                          EmotionImages.paths.map((path) {
+                            final isSelected = post.emotion == path;
+                            final size = isSelected ? 35.0 : 30.0;
+
+                            return GestureDetector(
+                              onTap: () => viewModel.updateEmotion(path),
+                              child: Image.asset(
+                                path,
+                                width: size,
+                                height: size,
+                              ),
+                            );
+                          }).toList(),
                     ),
 
                     SizedBox(height: 16),
                     Container(
                       height: 200,
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.surface,
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(color: Colors.grey),
                       ),
                       child: TextField(
+                        onChanged: (value) => viewModel.updateContent(value),
                         maxLines: null,
                         expands: true,
                         decoration: InputDecoration(
@@ -101,6 +113,37 @@ class WritePost extends ConsumerWidget {
                 ),
               ),
             ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: SizedBox(
+            width: double.infinity,
+            height: 48,
+            child: ElevatedButton.icon(
+              onPressed: () async {
+                ref.read(writePostProvider.notifier).save();
+
+                if (context.mounted) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const WrittenPostScreen(),
+                    ),
+                  );
+                }
+              },
+
+              icon: Icon(Icons.save),
+              label: Text('저장하기'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).primaryColor,
+                foregroundColor: Colors.white,
+                textStyle: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
           ),
         ),
       ),

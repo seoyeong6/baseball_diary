@@ -3,8 +3,8 @@ import 'package:baseball_diary/main_navigation/widget/detail_bottom_sheet.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:baseball_diary/select/viewmodels/select_viewmodels.dart';
 
-class WrittenPost extends ConsumerWidget {
-  const WrittenPost({super.key});
+class WrittenPostScreen extends ConsumerWidget {
+  const WrittenPostScreen({super.key});
 
   void _onDetailTap(BuildContext context) async {
     await showModalBottomSheet(
