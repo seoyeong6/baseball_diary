@@ -34,6 +34,7 @@ final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
 });
 
 final localPostRepoProvider = Provider<LocalPostRepository>((ref) {
+  print("✅ localPostRepoProvider evaluated");
   final prefs = ref.watch(sharedPreferencesProvider);
   return LocalPostRepository(prefs);
 });

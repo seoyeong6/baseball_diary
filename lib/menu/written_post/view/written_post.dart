@@ -2,19 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:baseball_diary/select/viewmodels/select_viewmodels.dart';
 import 'package:baseball_diary/menu/write_post/models/post_model.dart';
-import 'package:baseball_diary/menu/written_post/widgets/detail_bottom_sheet.dart';
 import 'package:baseball_diary/menu/written_post/viewmodels/written_post_viewmodel.dart';
+import 'package:go_router/go_router.dart';
+import 'package:baseball_diary/route_const.dart';
 
 class WrittenPostScreen extends ConsumerWidget {
   const WrittenPostScreen({super.key});
 
-  void _onDetailTap(BuildContext context, PostModel post) async {
-    await showModalBottomSheet(
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      context: context,
-      builder: (context) => DetailBottomSheet(post: post),
-    );
+  void _onDetailTap(BuildContext context, PostModel post) {
+    context.pushNamed(detailPostRouteName, extra: post);
   }
 
   @override

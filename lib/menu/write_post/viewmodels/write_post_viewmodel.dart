@@ -57,6 +57,16 @@ class WritePostViewModel extends StateNotifier<PostModel> {
     );
   }
 
+  void reset() {
+    state = PostModel(
+      title: '',
+      content: '',
+      emotion: '',
+      createdAt: DateTime.now(),
+      userId: null,
+    );
+  }
+
   Future<void> save() async {
     final userId = state.userId;
     try {

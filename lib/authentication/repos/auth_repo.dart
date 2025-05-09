@@ -7,13 +7,21 @@ class AuthenticationRepository {
   bool get isLoggedIn => user != null;
   User? get user => _firebaseAuth.currentUser;
 
-  // 회원가입 기능 추가
+  /// 회원가입
   Future<void> signUp(String email, String password) async {
     await _firebaseAuth.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
   }
+
+  /// 로그아웃
+  Future<void> signOut() async {
+    await _firebaseAuth.signOut();
+  }
 }
 
-final authRepo = Provider((ref) => AuthenticationRepository());
+/// Provider 정의
+final authRepo = Provider<AuthenticationRepository>((ref) {
+  return AuthenticationRepository();
+});

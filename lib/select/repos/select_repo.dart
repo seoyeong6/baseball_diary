@@ -1,15 +1,23 @@
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:baseball_diary/core/preferences/preferences_service.dart';
+import 'package:baseball_diary/core/preferences/preferences_provider.dart';
 
 class SelectRepository {
-  final SharedPreferences _preferences;
+  final PreferencesService _preferencesService;
 
-  SelectRepository(this._preferences);
+  SelectRepository(this._preferencesService);
 
   Future<void> saveTeam(String team) async {
-    await _preferences.setString('team', team);
+    await _preferencesService.saveTeam(team);
   }
 
   String getTeam() {
-    return _preferences.getString('team') ?? '';
+    return _preferencesService.getTeam();
   }
 }
+
+/// ✅ PreferencesService를 주입받는 Provider
+final selectRepositoryProvider = Provider<SelectRepository>((ref) {
+  final preferencesService = ref.watch(preferencesServiceProvider);
+  return SelectRepository(preferencesService);
+});

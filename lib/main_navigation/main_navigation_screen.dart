@@ -12,24 +12,33 @@ class MainNavigationScreen extends ConsumerWidget {
 
   const MainNavigationScreen({super.key});
 
+  Widget getTabByIndex(int index) {
+    switch (index) {
+      case 0:
+        return const Center(child: Text('Calendar'));
+      case 1:
+        return const WrittenPostScreen(); // ✅ 일기 탭
+      case 2:
+        return const WritePost();
+      case 3:
+        return const Center(child: Text('Statistics'));
+      case 4:
+        return const SettingScreen();
+      default:
+        return const SizedBox();
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedIndex = ref.watch(bottomTabProvider);
-
-    final List<Widget> screens = [
-      const Center(child: Text('Calender', style: TextStyle(fontSize: 49))),
-      const WrittenPostScreen(),
-      const WritePost(),
-      const Center(child: Text('Statistics', style: TextStyle(fontSize: 49))),
-      const SettingScreen(),
-    ];
 
     void onTap(int index) {
       ref.read(bottomTabProvider.notifier).state = index;
     }
 
     return Scaffold(
-      body: IndexedStack(index: selectedIndex, children: screens),
+      body: getTabByIndex(selectedIndex),
       bottomNavigationBar: BottomAppBar(
         height: 88,
         color: Colors.black,

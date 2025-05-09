@@ -13,6 +13,7 @@ class SelectScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final viewModel = ref.watch(selectViewModelProvider.notifier);
     final selectedTeam = ref.watch(selectViewModelProvider);
+    final teams = viewModel.teams; // ✅ 지역 변수로 꺼냄
 
     return Scaffold(
       appBar: AppBar(
@@ -23,19 +24,18 @@ class SelectScreen extends ConsumerWidget {
         child: Padding(
           padding: const EdgeInsets.all(30.0),
           child: ListView.separated(
-            separatorBuilder: (context, index) {
-              return SizedBox(height: 15);
-            },
-            itemCount: viewModel.teams.length,
+            separatorBuilder: (context, index) => const SizedBox(height: 15),
+            itemCount: teams.length,
             itemBuilder: (context, index) {
+              final team = teams[index]; // ✅ 가독성 개선
               return GestureDetector(
                 onTap: () async {
-                  await viewModel.setTeam(viewModel.teams[index]);
+                  await viewModel.setTeam(team);
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('${viewModel.teams[index]}가 선택되었습니다.'),
-                        duration: Duration(seconds: 2),
+                        content: Text('$team가 선택되었습니다.'),
+                        duration: const Duration(seconds: 2),
                         behavior: SnackBarBehavior.floating,
                       ),
                     );
@@ -53,10 +53,10 @@ class SelectScreen extends ConsumerWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.sports_baseball_outlined),
-                        SizedBox(width: 10),
+                        const Icon(Icons.sports_baseball_outlined),
+                        const SizedBox(width: 10),
                         Text(
-                          viewModel.teams[index],
+                          team,
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ],

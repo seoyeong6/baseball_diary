@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:baseball_diary/theme/app_theme.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:baseball_diary/theme/theme_viewmodel.dart';
 
 class ThemeViewModel extends Notifier<bool> {
   @override
@@ -19,4 +21,9 @@ class ThemeViewModel extends Notifier<bool> {
 
 final themeViewModelProvider = NotifierProvider<ThemeViewModel, bool>(() {
   return ThemeViewModel();
+});
+
+final themeDataProvider = Provider<ThemeData>((ref) {
+  final isDarkMode = ref.watch(themeViewModelProvider);
+  return isDarkMode ? AppTheme.darkTheme : AppTheme.lightTheme;
 });

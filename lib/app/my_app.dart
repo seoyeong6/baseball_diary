@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:device_preview_plus/device_preview_plus.dart';
 import 'package:baseball_diary/router.dart';
-import 'package:baseball_diary/theme/app_theme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:baseball_diary/select/viewmodels/select_viewmodels.dart';
 import 'package:baseball_diary/theme/theme_viewmodel.dart';
 
 class MyApp extends ConsumerWidget {
@@ -11,16 +9,14 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isDarkMode = ref.watch(themeViewModelProvider);
-    final themeViewModel = ref.watch(themeViewModelProvider.notifier);
+    final theme = ref.watch(themeDataProvider);
 
     return MaterialApp.router(
-      title: 'Baseball Diary',
-      theme: themeViewModel.currentTheme,
-      routerConfig: router,
+      routerConfig: router, // ✅ GoRouter 연결
+      theme: theme,
+      builder: DevicePreview.appBuilder,
       useInheritedMediaQuery: true,
       locale: DevicePreview.locale(context),
-      builder: DevicePreview.appBuilder,
     );
   }
 }
