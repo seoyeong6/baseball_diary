@@ -11,11 +11,10 @@ class WrittenPostViewModel extends AutoDisposeAsyncNotifier<List<PostModel>> {
 
     if (user == null) {
       final localRepo = ref.read(localPostRepoProvider);
-      // 🔥 평가를 지연시키기 위해 Future로 감쌈
       return Future(() => localRepo.fetchPosts());
     } else {
       final repo = ref.read(postRepoProvider);
-      return await repo.fetchPosts();
+      return await repo.fetchPosts(user.uid); // ✅ userId 전달
     }
   }
 }

@@ -17,10 +17,11 @@ class PostRepository {
     }
   }
 
-  Future<List<PostModel>> fetchPosts() async {
+  Future<List<PostModel>> fetchPosts(String userId) async {
     final snapshot =
         await _db
             .collection('posts')
+            .where('userId', isEqualTo: userId) // ✅ 사용자 ID로 필터링 추가
             .orderBy('createdAt', descending: true)
             .get();
 
