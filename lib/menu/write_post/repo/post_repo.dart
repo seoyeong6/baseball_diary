@@ -6,7 +6,15 @@ class PostRepository {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   Future<void> savePost(PostModel post) async {
-    await _db.collection('posts').add(post.toJson());
+    try {
+      final json = post.toJson();
+      print('📦 저장 요청: $json');
+      await _db.collection('posts').add(json);
+      print('✅ Firestore 저장 성공');
+    } catch (e, stack) {
+      print('❌ Firestore 저장 실패: $e');
+      print(stack);
+    }
   }
 
   Future<List<PostModel>> fetchPosts() async {
