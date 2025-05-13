@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:baseball_diary/select/viewmodels/select_viewmodels.dart';
 import 'package:baseball_diary/theme/theme_viewmodel.dart';
-import 'package:baseball_diary/route_const.dart';
+import 'package:baseball_diary/app/route_const.dart';
 import 'package:baseball_diary/authentication/providers/auth_providers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:baseball_diary/authentication/repos/auth_repo.dart';

@@ -4,7 +4,7 @@ import 'package:baseball_diary/select/viewmodels/select_viewmodels.dart';
 import 'package:baseball_diary/menu/write_post/models/post_model.dart';
 import 'package:baseball_diary/menu/written_post/viewmodels/written_post_viewmodel.dart';
 import 'package:go_router/go_router.dart';
-import 'package:baseball_diary/route_const.dart';
+import 'package:baseball_diary/app/route_const.dart';
 
 class WrittenPostScreen extends ConsumerWidget {
   const WrittenPostScreen({super.key});

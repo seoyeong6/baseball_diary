@@ -5,7 +5,7 @@ import 'package:baseball_diary/select/viewmodels/select_viewmodels.dart';
 import 'package:baseball_diary/menu/write_post/view/emotion_images.dart';
 import 'package:baseball_diary/menu/write_post/viewmodels/write_post_viewmodel.dart';
 import 'package:baseball_diary/main_navigation/providers/bottom_tab_provider.dart';
-import 'package:baseball_diary/route_const.dart';
+import 'package:baseball_diary/app/route_const.dart';
 import 'package:baseball_diary/menu/written_post/viewmodels/written_post_viewmodel.dart';
 
 class WritePost extends ConsumerStatefulWidget {

@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:go_router/go_router.dart';
-import 'package:baseball_diary/route_const.dart';
+import 'package:baseball_diary/app/route_const.dart';
 
 class LoginFormScreen extends ConsumerStatefulWidget {
   const LoginFormScreen({super.key});
