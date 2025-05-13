@@ -4,22 +4,39 @@ import 'package:baseball_diary/menu/write_post/models/post_model.dart';
 import 'package:baseball_diary/menu/write_post/repo/post_repo.dart';
 import 'package:baseball_diary/menu/write_post/repo/local_post_repo.dart';
 
-class WrittenPostViewModel extends AutoDisposeAsyncNotifier<List<PostModel>> {
-  @override
-  Future<List<PostModel>> build() async {
-    final user = FirebaseAuth.instance.currentUser;
+class WrittenPostViewModel extends StateNotifier<AsyncValue<List<PostModel>>> {
+  final Ref ref;
+  DateTime _selectedDate = DateTime.now();
 
-    if (user == null) {
-      final localRepo = ref.read(localPostRepoProvider);
-      return Future(() => localRepo.fetchPosts());
-    } else {
-      final repo = ref.read(postRepoProvider);
-      return await repo.fetchPosts(user.uid); // ✅ userId 전달
+  WrittenPostViewModel(this.ref) : super(const AsyncValue.loading()) {
+    _loadPosts();
+  }
+
+  DateTime get selectedDate => _selectedDate;
+
+  void setSelectedDate(DateTime date) {
+    _selectedDate = date;
+    _loadPosts();
+  }
+
+  Future<void> _loadPosts() async {
+    state = const AsyncValue.loading();
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        final localRepo = ref.read(localPostRepoProvider);
+        state = AsyncValue.data(localRepo.fetchPosts());
+      } else {
+        final repo = ref.read(postRepoProvider);
+        state = AsyncValue.data(await repo.fetchPosts(user.uid));
+      }
+    } catch (e, stack) {
+      state = AsyncValue.error(e, stack);
     }
   }
 }
 
 final writtenPostProvider =
-    AutoDisposeAsyncNotifierProvider<WrittenPostViewModel, List<PostModel>>(
-      () => WrittenPostViewModel(),
+    StateNotifierProvider<WrittenPostViewModel, AsyncValue<List<PostModel>>>(
+      (ref) => WrittenPostViewModel(ref),
     );
