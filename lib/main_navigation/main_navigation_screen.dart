@@ -12,23 +12,6 @@ class MainNavigationScreen extends ConsumerWidget {
 
   const MainNavigationScreen({super.key});
 
-  Widget getTabByIndex(int index) {
-    switch (index) {
-      case 0:
-        return const Center(child: Text('Calendar'));
-      case 1:
-        return const WrittenPostScreen(); // ✅ 일기 탭
-      case 2:
-        return const WritePost();
-      case 3:
-        return const Center(child: Text('Statistics'));
-      case 4:
-        return const SettingScreen();
-      default:
-        return const SizedBox();
-    }
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedIndex = ref.watch(bottomTabProvider);
@@ -38,7 +21,24 @@ class MainNavigationScreen extends ConsumerWidget {
     }
 
     return Scaffold(
-      body: getTabByIndex(selectedIndex),
+      body: Stack(
+        children: [
+          Offstage(
+            offstage: selectedIndex != 0,
+            child: const Center(child: Text('Calendar')),
+          ),
+          Offstage(
+            offstage: selectedIndex != 1,
+            child: const WrittenPostScreen(),
+          ),
+          Offstage(offstage: selectedIndex != 2, child: const WritePost()),
+          Offstage(
+            offstage: selectedIndex != 3,
+            child: const Center(child: Text('Statistics')),
+          ),
+          Offstage(offstage: selectedIndex != 4, child: const SettingScreen()),
+        ],
+      ),
       bottomNavigationBar: BottomAppBar(
         height: 88,
         color: Colors.black,
