@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:device_preview_plus/device_preview_plus.dart';
-import 'package:baseball_diary/router.dart';
+import 'package:baseball_diary/app/router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:baseball_diary/theme/theme_viewmodel.dart';
 
