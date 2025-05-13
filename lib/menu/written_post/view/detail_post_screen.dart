@@ -9,7 +9,9 @@ class DetailPostScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(post.title)),
+      appBar: AppBar(
+        title: Text(post.title, style: Theme.of(context).textTheme.titleMedium),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

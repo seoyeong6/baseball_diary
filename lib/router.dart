@@ -31,7 +31,6 @@ final router = GoRouter(
       name: loginRouteName,
       builder: (context, state) => const LoginScreen(),
     ),
-
     GoRoute(
       path: writtenPostRoute,
       name: writtenPostRouteName,

@@ -38,12 +38,16 @@ class WrittenPostViewModel extends StateNotifier<AsyncValue<List<PostModel>>> {
       final user = FirebaseAuth.instance.currentUser;
       if (user == null) {
         final localRepo = ref.read(localPostRepoProvider);
-        _allPosts = localRepo.fetchPosts();
+        _allPosts = await localRepo.fetchPosts();
       } else {
         final repo = ref.read(postRepoProvider);
         _allPosts = await repo.fetchPosts(user.uid);
       }
-      _filterPosts();
+      if (_allPosts.isEmpty) {
+        state = const AsyncValue.data([]);
+      } else {
+        _filterPosts();
+      }
     } catch (e, stack) {
       state = AsyncValue.error(e, stack);
     }

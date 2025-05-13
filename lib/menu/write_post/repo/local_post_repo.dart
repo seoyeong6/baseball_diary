@@ -19,7 +19,7 @@ class LocalPostRepository {
   }
 
   /// 불러오기
-  List<PostModel> fetchPosts() {
+  Future<List<PostModel>> fetchPosts() async {
     final List<String> rawPosts = _prefs.getStringList(_key) ?? [];
     return rawPosts.map((e) => PostModel.fromJson(jsonDecode(e))).toList();
   }
