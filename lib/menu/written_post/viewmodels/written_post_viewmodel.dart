@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:baseball_diary/menu/write_post/models/post_model.dart';
@@ -6,17 +7,34 @@ import 'package:baseball_diary/menu/write_post/repo/local_post_repo.dart';
 
 class WrittenPostViewModel extends StateNotifier<AsyncValue<List<PostModel>>> {
   final Ref ref;
-  DateTime _selectedDate = DateTime.now();
   List<PostModel> _allPosts = [];
+  final List<PostModel> _filteredPosts = [];
+  DateTime _selectedMonth = DateTime.now();
+  StreamSubscription<User?>? _authStateSubscription;
 
   WrittenPostViewModel(this.ref) : super(const AsyncValue.loading()) {
     _loadPosts();
+    _setupAuthStateListener();
   }
 
-  DateTime get selectedDate => _selectedDate;
+  void _setupAuthStateListener() {
+    _authStateSubscription = FirebaseAuth.instance.authStateChanges().listen((
+      User? user,
+    ) {
+      _loadPosts();
+    });
+  }
+
+  @override
+  void dispose() {
+    _authStateSubscription?.cancel();
+    super.dispose();
+  }
+
+  DateTime get selectedDate => _selectedMonth;
 
   void setSelectedDate(DateTime date) {
-    _selectedDate = date;
+    _selectedMonth = date;
     _filterPosts();
   }
 
@@ -25,8 +43,8 @@ class WrittenPostViewModel extends StateNotifier<AsyncValue<List<PostModel>>> {
 
     final filteredPosts =
         _allPosts.where((post) {
-          return post.createdAt.year == _selectedDate.year &&
-              post.createdAt.month == _selectedDate.month;
+          return post.createdAt.year == _selectedMonth.year &&
+              post.createdAt.month == _selectedMonth.month;
         }).toList();
 
     state = AsyncValue.data(filteredPosts);

@@ -55,20 +55,22 @@ class _LoginFormScreenState extends ConsumerState<LoginFormScreen> {
           message = '비밀번호가 틀렸습니다.';
         }
 
-        showDialog(
-          context: context,
-          builder:
-              (context) => AlertDialog(
-                title: const Text('로그인 실패'),
-                content: Text(message),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text('확인'),
-                  ),
-                ],
-              ),
-        );
+        if (context.mounted) {
+          showDialog(
+            context: context,
+            builder:
+                (context) => AlertDialog(
+                  title: const Text('로그인 실패'),
+                  content: Text(message),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('확인'),
+                    ),
+                  ],
+                ),
+          );
+        }
       }
     }
   }
