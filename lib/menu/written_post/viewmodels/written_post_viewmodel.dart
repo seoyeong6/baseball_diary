@@ -35,12 +35,11 @@ class WrittenPostViewModel extends StateNotifier<AsyncValue<List<PostModel>>> {
 
   void setSelectedDate(DateTime date) {
     _selectedMonth = date;
+    state = const AsyncValue.loading();
     _filterPosts();
   }
 
   void _filterPosts() {
-    if (_allPosts.isEmpty) return;
-
     final filteredPosts =
         _allPosts.where((post) {
           return post.createdAt.year == _selectedMonth.year &&
@@ -61,11 +60,7 @@ class WrittenPostViewModel extends StateNotifier<AsyncValue<List<PostModel>>> {
         final repo = ref.read(postRepoProvider);
         _allPosts = await repo.fetchPosts(user.uid);
       }
-      if (_allPosts.isEmpty) {
-        state = const AsyncValue.data([]);
-      } else {
-        _filterPosts();
-      }
+      _filterPosts();
     } catch (e, stack) {
       state = AsyncValue.error(e, stack);
     }
