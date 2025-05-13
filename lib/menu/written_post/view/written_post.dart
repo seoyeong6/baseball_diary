@@ -33,43 +33,7 @@ class WrittenPostScreen extends ConsumerWidget {
       body: Column(
         children: [
           const SizedBox(height: 12),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
-                onPressed: () {
-                  final currentDate =
-                      ref.read(writtenPostProvider.notifier).selectedDate;
-                  final newDate = DateTime(
-                    currentDate.year,
-                    currentDate.month - 1,
-                  );
-                  ref
-                      .read(writtenPostProvider.notifier)
-                      .setSelectedDate(newDate);
-                },
-                icon: const Text("<"),
-              ),
-              Text(
-                '${ref.watch(writtenPostProvider.notifier).selectedDate.year}. ${ref.watch(writtenPostProvider.notifier).selectedDate.month.toString().padLeft(2, '0')}',
-                style: const TextStyle(fontSize: 16),
-              ),
-              IconButton(
-                onPressed: () {
-                  final currentDate =
-                      ref.read(writtenPostProvider.notifier).selectedDate;
-                  final newDate = DateTime(
-                    currentDate.year,
-                    currentDate.month + 1,
-                  );
-                  ref
-                      .read(writtenPostProvider.notifier)
-                      .setSelectedDate(newDate);
-                },
-                icon: const Text(">"),
-              ),
-            ],
-          ),
+          _buildMonthSelector(ref),
           const SizedBox(height: 12),
           Expanded(
             child: postsAsync.when(
@@ -150,6 +114,59 @@ class WrittenPostScreen extends ConsumerWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildMonthSelector(WidgetRef ref) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        _MonthChangeButton(
+          direction: 'prev',
+          onPressed: () => _changeMonth(ref, -1),
+        ),
+        _MonthDisplay(ref: ref),
+        _MonthChangeButton(
+          direction: 'next',
+          onPressed: () => _changeMonth(ref, 1),
+        ),
+      ],
+    );
+  }
+
+  void _changeMonth(WidgetRef ref, int monthOffset) {
+    final currentDate = ref.read(writtenPostProvider.notifier).selectedDate;
+    final newDate = DateTime(currentDate.year, currentDate.month + monthOffset);
+    ref.read(writtenPostProvider.notifier).setSelectedDate(newDate);
+  }
+}
+
+class _MonthChangeButton extends StatelessWidget {
+  final String direction;
+  final VoidCallback onPressed;
+
+  const _MonthChangeButton({required this.direction, required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: onPressed,
+      icon: Text(direction == 'prev' ? '<' : '>'),
+    );
+  }
+}
+
+class _MonthDisplay extends ConsumerWidget {
+  const _MonthDisplay({required this.ref});
+
+  final WidgetRef ref;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedDate = ref.watch(writtenPostProvider.notifier).selectedDate;
+    return Text(
+      '${selectedDate.year}. ${selectedDate.month.toString().padLeft(2, '0')}',
+      style: const TextStyle(fontSize: 16),
     );
   }
 }
