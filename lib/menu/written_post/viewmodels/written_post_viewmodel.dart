@@ -7,6 +7,7 @@ import 'package:baseball_diary/menu/write_post/repo/local_post_repo.dart';
 class WrittenPostViewModel extends StateNotifier<AsyncValue<List<PostModel>>> {
   final Ref ref;
   DateTime _selectedDate = DateTime.now();
+  List<PostModel> _allPosts = [];
 
   WrittenPostViewModel(this.ref) : super(const AsyncValue.loading()) {
     _loadPosts();
@@ -16,7 +17,19 @@ class WrittenPostViewModel extends StateNotifier<AsyncValue<List<PostModel>>> {
 
   void setSelectedDate(DateTime date) {
     _selectedDate = date;
-    _loadPosts();
+    _filterPosts();
+  }
+
+  void _filterPosts() {
+    if (_allPosts.isEmpty) return;
+
+    final filteredPosts =
+        _allPosts.where((post) {
+          return post.createdAt.year == _selectedDate.year &&
+              post.createdAt.month == _selectedDate.month;
+        }).toList();
+
+    state = AsyncValue.data(filteredPosts);
   }
 
   Future<void> _loadPosts() async {
@@ -25,11 +38,12 @@ class WrittenPostViewModel extends StateNotifier<AsyncValue<List<PostModel>>> {
       final user = FirebaseAuth.instance.currentUser;
       if (user == null) {
         final localRepo = ref.read(localPostRepoProvider);
-        state = AsyncValue.data(localRepo.fetchPosts());
+        _allPosts = localRepo.fetchPosts();
       } else {
         final repo = ref.read(postRepoProvider);
-        state = AsyncValue.data(await repo.fetchPosts(user.uid));
+        _allPosts = await repo.fetchPosts(user.uid);
       }
+      _filterPosts();
     } catch (e, stack) {
       state = AsyncValue.error(e, stack);
     }

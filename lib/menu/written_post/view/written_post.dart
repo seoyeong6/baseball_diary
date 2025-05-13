@@ -35,12 +35,39 @@ class WrittenPostScreen extends ConsumerWidget {
           const SizedBox(height: 12),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Text("<"),
-              SizedBox(width: 10),
-              Text('2025. 04', style: TextStyle(fontSize: 16)),
-              SizedBox(width: 10),
-              Text(">"),
+            children: [
+              IconButton(
+                onPressed: () {
+                  final currentDate =
+                      ref.read(writtenPostProvider.notifier).selectedDate;
+                  final newDate = DateTime(
+                    currentDate.year,
+                    currentDate.month - 1,
+                  );
+                  ref
+                      .read(writtenPostProvider.notifier)
+                      .setSelectedDate(newDate);
+                },
+                icon: const Text("<"),
+              ),
+              Text(
+                '${ref.watch(writtenPostProvider.notifier).selectedDate.year}. ${ref.watch(writtenPostProvider.notifier).selectedDate.month.toString().padLeft(2, '0')}',
+                style: const TextStyle(fontSize: 16),
+              ),
+              IconButton(
+                onPressed: () {
+                  final currentDate =
+                      ref.read(writtenPostProvider.notifier).selectedDate;
+                  final newDate = DateTime(
+                    currentDate.year,
+                    currentDate.month + 1,
+                  );
+                  ref
+                      .read(writtenPostProvider.notifier)
+                      .setSelectedDate(newDate);
+                },
+                icon: const Text(">"),
+              ),
             ],
           ),
           const SizedBox(height: 12),
@@ -83,7 +110,7 @@ class WrittenPostScreen extends ConsumerWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    '${post.createdAt.year}.${post.createdAt.month.toString().padLeft(2, '0')}.${post.createdAt.day.toString().padLeft(2, '0')}',
+                                    '${post.createdAt.year}.${post.createdAt.month.toString().padLeft(2, '0')}.${post.createdAt.day.toString().padLeft(2, '0')} ${post.createdAt.hour.toString().padLeft(2, '0')}:${post.createdAt.minute.toString().padLeft(2, '0')}',
                                     style: const TextStyle(fontSize: 12),
                                   ),
                                   Text(
