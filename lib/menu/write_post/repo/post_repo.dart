@@ -25,7 +25,9 @@ class PostRepository {
             .orderBy('createdAt', descending: true)
             .get();
 
-    return snapshot.docs.map((doc) => PostModel.fromJson(doc.data())).toList();
+    return snapshot.docs
+        .map((doc) => PostModel.fromJson(doc.data(), id: doc.id))
+        .toList();
   }
 }
 

@@ -14,14 +14,19 @@ class LocalPostRepository {
   /// 저장
   Future<void> savePost(PostModel post) async {
     final List<String> rawPosts = _prefs.getStringList(_key) ?? [];
-    rawPosts.add(jsonEncode(post.toJson()));
+    final json = post.toJson();
+    json['id'] = DateTime.now().millisecondsSinceEpoch.toString(); // 로컬 ID 생성
+    rawPosts.add(jsonEncode(json));
     await _prefs.setStringList(_key, rawPosts);
   }
 
   /// 불러오기
   Future<List<PostModel>> fetchPosts() async {
     final List<String> rawPosts = _prefs.getStringList(_key) ?? [];
-    return rawPosts.map((e) => PostModel.fromJson(jsonDecode(e))).toList();
+    return rawPosts.map((e) {
+      final json = jsonDecode(e);
+      return PostModel.fromJson(json, id: json['id']);
+    }).toList();
   }
 
   /// 전체 삭제 (선택사항)

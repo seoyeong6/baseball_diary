@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PostModel {
+  final String? id; // Firestore 문서 ID
   final String title;
   final String content;
   final String emotion; // 감정 이미지 파일명 or 키
@@ -8,6 +9,7 @@ class PostModel {
   final String? userId; // 로그인된 유저만 저장
 
   PostModel({
+    this.id,
     required this.title,
     required this.content,
     required this.emotion,
@@ -25,7 +27,7 @@ class PostModel {
   };
 
   /// Firestore 또는 local에서 불러올 때 사용
-  factory PostModel.fromJson(Map<String, dynamic> json) {
+  factory PostModel.fromJson(Map<String, dynamic> json, {String? id}) {
     final rawCreatedAt = json['createdAt'];
 
     DateTime createdAt;
@@ -39,6 +41,7 @@ class PostModel {
     }
 
     return PostModel(
+      id: id,
       title: json['title'] ?? '',
       content: json['content'] ?? '',
       emotion: json['emotion'] ?? '',
