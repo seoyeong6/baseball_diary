@@ -10,7 +10,13 @@ class DetailPostScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(post.title, style: Theme.of(context).textTheme.titleMedium),
+        title: Row(
+          children: [
+            CircleAvatar(radius: 16, backgroundImage: AssetImage(post.emotion)),
+            const SizedBox(width: 16),
+            Text(post.title, style: Theme.of(context).textTheme.titleMedium),
+          ],
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
