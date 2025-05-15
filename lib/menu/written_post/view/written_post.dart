@@ -59,14 +59,21 @@ class WrittenPostScreen extends ConsumerWidget {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const CircleAvatar(
-                              radius: 20,
-                              backgroundColor: Colors.grey,
-                              child: Icon(
-                                Icons.sports_baseball_sharp,
-                                color: Colors.white,
-                                size: 20,
-                              ),
+                            CircleAvatar(
+                              radius: 16,
+                              backgroundColor: Colors.grey[200],
+                              backgroundImage:
+                                  post.emotion.isNotEmpty
+                                      ? AssetImage(post.emotion) // 감정 이미지 표시
+                                      : null,
+                              child:
+                                  post.emotion.isEmpty
+                                      ? const Icon(
+                                        Icons.sports_baseball_sharp,
+                                        color: Colors.white,
+                                        size: 20,
+                                      )
+                                      : null,
                             ),
                             const SizedBox(width: 16),
                             Expanded(
