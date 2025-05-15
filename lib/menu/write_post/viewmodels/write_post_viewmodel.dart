@@ -11,6 +11,7 @@ class WritePostViewModel extends StateNotifier<PostModel> {
   WritePostViewModel(this.ref)
     : super(
         PostModel(
+          id: null,
           title: '',
           content: '',
           emotion: '',
@@ -18,66 +19,39 @@ class WritePostViewModel extends StateNotifier<PostModel> {
           userId: null,
         ),
       ) {
-    // 현재 Firebase 인증 상태 확인
+    // 초기 로그인 상태 반영
     final currentUser = FirebaseAuth.instance.currentUser;
     if (currentUser != null) {
       updateUserId(currentUser.uid);
     }
 
-    // Firebase 인증 상태 변화 감지
+    // 로그인 상태 변화 감지
     ref.listen<AsyncValue<User?>>(authStreamProvider, (previous, next) {
       next.whenData((user) {
-        if (user != null) {
-          updateUserId(user.uid);
-        } else {
-          updateUserId(null);
-        }
+        updateUserId(user?.uid);
       });
     });
   }
 
   void updateTitle(String title) {
-    state = PostModel(
-      title: title,
-      content: state.content,
-      emotion: state.emotion,
-      createdAt: state.createdAt,
-      userId: state.userId,
-    );
+    state = state.copyWith(title: title);
   }
 
   void updateContent(String content) {
-    state = PostModel(
-      title: state.title,
-      content: content,
-      emotion: state.emotion,
-      createdAt: state.createdAt,
-      userId: state.userId,
-    );
+    state = state.copyWith(content: content);
   }
 
   void updateEmotion(String emotion) {
-    state = PostModel(
-      title: state.title,
-      content: state.content,
-      emotion: emotion,
-      createdAt: state.createdAt,
-      userId: state.userId,
-    );
+    state = state.copyWith(emotion: emotion);
   }
 
   void updateUserId(String? userId) {
-    state = PostModel(
-      title: state.title,
-      content: state.content,
-      emotion: state.emotion,
-      createdAt: state.createdAt,
-      userId: userId,
-    );
+    state = state.copyWith(userId: userId);
   }
 
   void reset() {
     state = PostModel(
+      id: null,
       title: '',
       content: '',
       emotion: '',
@@ -87,9 +61,8 @@ class WritePostViewModel extends StateNotifier<PostModel> {
   }
 
   Future<void> save() async {
-    final userId = state.userId;
-
     try {
+      final userId = state.userId;
       if (userId == null) {
         final localRepo = ref.read(localPostRepoProvider);
         await localRepo.savePost(state);

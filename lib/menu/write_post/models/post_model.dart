@@ -17,6 +17,24 @@ class PostModel {
     this.userId,
   });
 
+  PostModel copyWith({
+    String? id,
+    String? title,
+    String? content,
+    String? emotion,
+    DateTime? createdAt,
+    String? userId,
+  }) {
+    return PostModel(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      content: content ?? this.content,
+      emotion: emotion ?? this.emotion,
+      createdAt: createdAt ?? this.createdAt,
+      userId: userId ?? this.userId,
+    );
+  }
+
   /// Firestore 저장용 JSON 변환
   Map<String, dynamic> toJson() => {
     'title': title,
