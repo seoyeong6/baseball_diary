@@ -50,30 +50,29 @@ class WritePostViewModel extends StateNotifier<PostModel> {
   }
 
   void reset() {
+    final currentUser = FirebaseAuth.instance.currentUser;
+
     state = PostModel(
       id: null,
       title: '',
       content: '',
       emotion: '',
       createdAt: DateTime.now(),
-      userId: null,
+      userId: currentUser?.uid,
     );
   }
 
   Future<void> save() async {
-    // 현재 시각으로 createdAt을 덮어쓴 새로운 상태 생성
     final postToSave = state.copyWith(createdAt: DateTime.now());
 
     try {
       if (postToSave.userId == null) {
-        final localRepo = ref.read(localPostRepoProvider);
-        await localRepo.savePost(postToSave);
+        await ref.read(localPostRepoProvider).savePost(postToSave);
       } else {
-        final repo = ref.read(postRepoProvider);
-        await repo.savePost(postToSave);
+        await ref.read(postRepoProvider).savePost(postToSave);
       }
     } catch (e, stack) {
-      print('❌ ViewModel 저장 실패: $e');
+      print('❌ 저장 실패: $e');
       print(stack);
     }
   }
