@@ -18,6 +18,7 @@ class WritePost extends ConsumerStatefulWidget {
 class _WritePostState extends ConsumerState<WritePost> {
   late TextEditingController _titleController;
   late TextEditingController _contentController;
+  bool _isSaving = false;
 
   @override
   void initState() {
@@ -151,18 +152,33 @@ class _WritePostState extends ConsumerState<WritePost> {
             width: double.infinity,
             height: 48,
             child: ElevatedButton.icon(
-              onPressed: () async {
-                await ref.read(writePostProvider.notifier).save();
-                ref.invalidate(writtenPostProvider); // 리스트 갱신
-                ref.read(writePostProvider.notifier).reset(); // 상태 초기화
-                _resetControllers(); // 텍스트필드 초기화
-                ref.read(bottomTabProvider.notifier).state = 1; // 탭 이동
-                if (context.mounted) {
-                  context.goNamed(mainNavigationRouteName); // 메인화면으로 이동
-                }
-              },
-              icon: const Icon(Icons.save),
-              label: const Text('저장하기'),
+              onPressed:
+                  _isSaving
+                      ? null
+                      : () async {
+                        setState(() => _isSaving = true);
+                        try {
+                          await ref.read(writePostProvider.notifier).save();
+                          ref.invalidate(writtenPostProvider); // 리스트 갱신
+                          ref
+                              .read(writePostProvider.notifier)
+                              .reset(); // 상태 초기화
+                          _resetControllers(); // 텍스트필드 초기화
+                          ref.read(bottomTabProvider.notifier).state =
+                              1; // 탭 이동
+                          if (context.mounted) {
+                            context.goNamed(
+                              mainNavigationRouteName,
+                            ); // 메인화면으로 이동
+                          }
+                        } finally {
+                          if (mounted) {
+                            setState(() => _isSaving = false);
+                          }
+                        }
+                      },
+              icon: Icon(_isSaving ? Icons.hourglass_empty : Icons.save),
+              label: Text(_isSaving ? '저장 중...' : '저장하기'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Theme.of(context).primaryColor,
                 foregroundColor: Colors.white,
