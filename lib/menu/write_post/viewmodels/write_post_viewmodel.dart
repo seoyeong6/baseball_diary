@@ -61,14 +61,16 @@ class WritePostViewModel extends StateNotifier<PostModel> {
   }
 
   Future<void> save() async {
+    // 현재 시각으로 createdAt을 덮어쓴 새로운 상태 생성
+    final postToSave = state.copyWith(createdAt: DateTime.now());
+
     try {
-      final userId = state.userId;
-      if (userId == null) {
+      if (postToSave.userId == null) {
         final localRepo = ref.read(localPostRepoProvider);
-        await localRepo.savePost(state);
+        await localRepo.savePost(postToSave);
       } else {
         final repo = ref.read(postRepoProvider);
-        await repo.savePost(state);
+        await repo.savePost(postToSave);
       }
     } catch (e, stack) {
       print('❌ ViewModel 저장 실패: $e');
