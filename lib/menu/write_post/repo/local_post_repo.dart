@@ -1,0 +1,41 @@
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:baseball_diary/menu/write_post/models/post_model.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:baseball_diary/core/preferences/preferences_provider.dart';
+
+class LocalPostRepository {
+  final SharedPreferences _prefs;
+
+  LocalPostRepository(this._prefs);
+
+  static const _key = 'local_posts';
+
+  /// 저장
+  Future<void> savePost(PostModel post) async {
+    final List<String> rawPosts = _prefs.getStringList(_key) ?? [];
+    final json = post.toJson();
+    json['id'] = DateTime.now().millisecondsSinceEpoch.toString(); // 로컬 ID 생성
+    rawPosts.add(jsonEncode(json));
+    await _prefs.setStringList(_key, rawPosts);
+  }
+
+  /// 불러오기
+  Future<List<PostModel>> fetchPosts() async {
+    final List<String> rawPosts = _prefs.getStringList(_key) ?? [];
+    return rawPosts.map((e) {
+      final json = jsonDecode(e);
+      return PostModel.fromJson(json, id: json['id']);
+    }).toList();
+  }
+
+  /// 전체 삭제 (선택사항)
+  Future<void> clearAll() async {
+    await _prefs.remove(_key);
+  }
+}
+
+final localPostRepoProvider = Provider<LocalPostRepository>((ref) {
+  final prefs = ref.watch(sharedPreferencesProvider);
+  return LocalPostRepository(prefs);
+});

@@ -1,7 +1,6 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:baseball_diary/select/repos/select_repo.dart';
 import 'package:baseball_diary/select/models/select_models.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:baseball_diary/core/preferences_service.dart';
 
 class SelectViewModel extends Notifier<String> {
   late final SelectRepository _repository;
@@ -9,7 +8,7 @@ class SelectViewModel extends Notifier<String> {
 
   @override
   String build() {
-    _repository = SelectRepository(PreferencesService.preferences);
+    _repository = ref.read(selectRepositoryProvider); // ✅ 지연 평가
     _teams = SelectModel().teams;
     return _repository.getTeam();
   }

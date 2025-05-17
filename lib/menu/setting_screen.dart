@@ -3,72 +3,58 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:baseball_diary/select/viewmodels/select_viewmodels.dart';
 import 'package:baseball_diary/theme/theme_viewmodel.dart';
-import 'package:baseball_diary/route_const.dart';
-import 'package:baseball_diary/authentication/providers/auth_providers.dart'; // 이 줄 추가
-import 'package:firebase_auth/firebase_auth.dart'; // 로그아웃에 필요
+import 'package:baseball_diary/app/route_const.dart';
+import 'package:baseball_diary/authentication/providers/auth_providers.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:baseball_diary/authentication/repos/auth_repo.dart';
 
 class SettingScreen extends ConsumerWidget {
   const SettingScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedTeam = ref.watch(selectViewModelProvider);
-    final teamName = selectedTeam.split(' ').first;
-    final isDarkMode = ref.watch(themeViewModelProvider);
-    final themeViewModel = ref.watch(themeViewModelProvider.notifier);
+    final authState = ref.watch(authStreamProvider);
 
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text('설정', style: Theme.of(context).textTheme.titleMedium),
-        centerTitle: true,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 24.0),
-          child: Text(teamName, style: Theme.of(context).textTheme.titleSmall),
-        ),
-      ),
-      body: Consumer(
-        builder: (context, ref, _) {
-          final authState = ref.watch(authStreamProvider);
-          final selectedTeam = ref.watch(selectViewModelProvider);
-          final teamName = selectedTeam.split(' ').first;
-          final isDarkMode = ref.watch(themeViewModelProvider);
-          final themeViewModel = ref.watch(themeViewModelProvider.notifier);
+    return authState.when(
+      loading:
+          () =>
+              const Scaffold(body: Center(child: CircularProgressIndicator())),
+      error: (e, _) => Scaffold(body: Center(child: Text('에러 발생: $e'))),
+      data: (user) {
+        final selectedTeam = ref.watch(selectViewModelProvider);
+        final teamName = selectedTeam.split(' ').first;
 
-          return Column(
+        final isDarkMode = ref.watch(themeViewModelProvider);
+        final themeViewModel = ref.watch(themeViewModelProvider.notifier);
+
+        return Scaffold(
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            title: Text('설정', style: Theme.of(context).textTheme.titleMedium),
+            centerTitle: true,
+            leading: Padding(
+              padding: const EdgeInsets.only(left: 24.0),
+              child: Text(
+                teamName,
+                style: Theme.of(context).textTheme.titleSmall,
+              ),
+            ),
+          ),
+          body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 16),
-
-              // ✅ 로그인 상태 표시
-              authState.when(
-                data: (user) {
-                  final text = user != null ? '로그인 계정: ${user.email}' : '비로그인';
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0,
-                      vertical: 4,
-                    ),
-                    child: Text(
-                      text,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                  );
-                },
-                loading:
-                    () => const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text('로딩 중...'),
-                    ),
-                error:
-                    (e, _) => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text('에러 발생: $e'),
-                    ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 4,
+                ),
+                child: Text(
+                  user != null ? '로그인 계정: ${user.email}' : '비로그인',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
               ),
-
               const Divider(),
-
               ListTile(
                 title: Text(
                   '로그인(백업용)',
@@ -82,7 +68,7 @@ class SettingScreen extends ConsumerWidget {
                   '팀 변경',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
-                onTap: () => GoRouter.of(context).push('/'),
+                onTap: () => GoRouter.of(context).pushNamed('select'),
                 trailing: const Icon(Icons.arrow_forward_ios),
               ),
               SwitchListTile(
@@ -91,26 +77,22 @@ class SettingScreen extends ConsumerWidget {
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 value: isDarkMode,
-                onChanged: (value) {
-                  themeViewModel.setIsDarkMode(value);
-                },
+                onChanged: themeViewModel.setIsDarkMode,
               ),
-
-              // ✅ 로그아웃 기능 연결
               ListTile(
                 title: Text(
                   '로그아웃',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 onTap: () async {
-                  await FirebaseAuth.instance.signOut();
+                  await ref.read(authRepo).signOut();
                 },
                 trailing: const Icon(Icons.arrow_forward_ios),
               ),
             ],
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }

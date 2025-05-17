@@ -1,45 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:baseball_diary/core/preferences_service.dart';
-import 'package:baseball_diary/app/my_app.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:baseball_diary/app/route_const.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  ConsumerState<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _initialize();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _initialize();
+    });
   }
 
   Future<void> _initialize() async {
-    await PreferencesService.init();
-    // 필요한 경우 여기에 다른 초기화 작업 추가
     await Future.delayed(const Duration(seconds: 2));
-
-    if (mounted) {
-      Navigator.of(
-        context,
-      ).pushReplacement(MaterialPageRoute(builder: (context) => const MyApp()));
-    }
+    if (!mounted) return;
+    context.goNamed(selectRouteName);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       backgroundColor: Colors.white,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // 여기에 앱 로고나 이미지 추가
-            const CircularProgressIndicator(),
-            const SizedBox(height: 16),
-            const Text('로딩 중...'),
+            CircularProgressIndicator(),
+            SizedBox(height: 16),
+            Text('로딩 중...'),
           ],
         ),
       ),

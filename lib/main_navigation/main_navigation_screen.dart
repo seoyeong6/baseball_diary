@@ -1,52 +1,42 @@
-import 'package:baseball_diary/menu/written_post.dart';
-import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:baseball_diary/main_navigation/widget/nav_tab.dart';
-import 'package:baseball_diary/menu/write_post.dart';
+import 'package:baseball_diary/menu/written_post/view/written_post.dart';
+import 'package:baseball_diary/menu/write_post/view/write_post.dart';
 import 'package:baseball_diary/menu/setting_screen.dart';
+import 'package:baseball_diary/main_navigation/widget/nav_tab.dart';
+import 'package:baseball_diary/main_navigation/providers/bottom_tab_provider.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class MainNavigationScreen extends StatefulWidget {
+class MainNavigationScreen extends ConsumerWidget {
   static const String routeName = '/main';
 
   const MainNavigationScreen({super.key});
 
   @override
-  State<MainNavigationScreen> createState() => _MainNavigationScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedIndex = ref.watch(bottomTabProvider);
 
-class _MainNavigationScreenState extends State<MainNavigationScreen> {
-  int _selectedIndex = 0;
+    void onTap(int index) {
+      ref.read(bottomTabProvider.notifier).state = index;
+    }
 
-  final screens = [
-    const Center(child: Text('Calender', style: TextStyle(fontSize: 49))),
-    const Center(child: Text('Diary', style: TextStyle(fontSize: 49))),
-    const Center(child: Text('Record', style: TextStyle(fontSize: 49))),
-    const Center(child: Text('Statistics', style: TextStyle(fontSize: 49))),
-    const Center(child: Text('Settings', style: TextStyle(fontSize: 49))),
-  ];
-
-  void _onTap(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
           Offstage(
-            offstage: _selectedIndex != 0,
-            child: screens[_selectedIndex],
+            offstage: selectedIndex != 0,
+            child: const Center(child: Text('Calendar')),
           ),
-          Offstage(offstage: _selectedIndex != 1, child: const WrittenPost()),
-          Offstage(offstage: _selectedIndex != 2, child: const WritePost()),
           Offstage(
-            offstage: _selectedIndex != 3,
-            child: screens[_selectedIndex],
+            offstage: selectedIndex != 1,
+            child: const WrittenPostScreen(),
           ),
-          Offstage(offstage: _selectedIndex != 4, child: const SettingScreen()),
+          Offstage(offstage: selectedIndex != 2, child: const WritePost()),
+          Offstage(
+            offstage: selectedIndex != 3,
+            child: const Center(child: Text('Statistics')),
+          ),
+          Offstage(offstage: selectedIndex != 4, child: const SettingScreen()),
         ],
       ),
       bottomNavigationBar: BottomAppBar(
@@ -59,33 +49,33 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             children: [
               NavTab(
                 text: "캘린더",
-                isSelected: _selectedIndex == 0,
+                isSelected: selectedIndex == 0,
                 icon: FontAwesomeIcons.calendar,
-                onTap: () => _onTap(0),
+                onTap: () => onTap(0),
               ),
               NavTab(
                 text: "일기",
-                isSelected: _selectedIndex == 1,
+                isSelected: selectedIndex == 1,
                 icon: FontAwesomeIcons.book,
-                onTap: () => _onTap(1),
+                onTap: () => onTap(1),
               ),
               NavTab(
                 text: "기록",
-                isSelected: _selectedIndex == 2,
+                isSelected: selectedIndex == 2,
                 icon: FontAwesomeIcons.message,
-                onTap: () => _onTap(2),
+                onTap: () => onTap(2),
               ),
               NavTab(
                 text: "통계",
-                isSelected: _selectedIndex == 3,
+                isSelected: selectedIndex == 3,
                 icon: FontAwesomeIcons.chartLine,
-                onTap: () => _onTap(3),
+                onTap: () => onTap(3),
               ),
               NavTab(
                 text: "설정",
-                isSelected: _selectedIndex == 4,
+                isSelected: selectedIndex == 4,
                 icon: FontAwesomeIcons.gear,
-                onTap: () => _onTap(4),
+                onTap: () => onTap(4),
               ),
             ],
           ),
